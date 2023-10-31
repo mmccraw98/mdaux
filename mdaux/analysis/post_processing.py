@@ -4,6 +4,46 @@ from .data_manipulation import getAtStep, getDpmData
 from mdaux.utils.helpers import compute_axes_of_polygon
 from tqdm import tqdm
 
+def unwrap_major_minor_axis_angles(theta_max, theta_min, tol=0.1):
+    """Unwraps the major and minor axis angles to be continuous.
+    
+    Parameters
+    ----------
+        theta_max : array-like
+        The major axis angles.
+        theta_min : array-like
+        The minor axis angles.
+        tol : float
+        The tolerance for detecting a boundary crossing.
+        
+    Returns
+    -------
+        theta_max : array-like
+        The unwrapped major axis angles.
+        theta_min : array-like
+        The unwrapped minor axis angles.
+    """
+
+    # theta_max and theta_min will ALWAYS be separated by +- pi / 2
+    # thus, only one of these may cross the boundary at a given instant (there should really be some delay between crossings)
+    # also, the noise SHOULD be constant between the two signals, so we can just take the difference between the two to cancel out the noise
+    # which gives us the crossing points
+    # we then need to use the crossing points to unwrap the boundary crossings
+
+    diff_shifts = abs(np.diff(theta_max - theta_min))
+    theta_max_diffs = - np.diff(theta_max) * diff_shifts
+    theta_min_diffs = - np.diff(theta_min) * diff_shifts
+
+    max_shifts = np.zeros(theta_max.size)
+    min_shifts = np.zeros(theta_min.size)
+    for i in range(1, theta_max.size - 1):
+        if abs(theta_max_diffs[i]) > tol or abs(theta_min_diffs[i]) > tol:
+            if abs(theta_max_diffs[i]) > abs(theta_min_diffs[i]):
+                max_shifts[i + 1:] += np.pi * np.sign(theta_max_diffs[i])
+            else:
+                min_shifts[i + 1:] += np.pi * np.sign(theta_min_diffs[i])
+    return theta_max + max_shifts, theta_min + min_shifts
+
 def autocorrFFT(x):
     N = len(x)
     F = np.fft.fft(x, n=2 * N)  # 2 * N because of zero-padding
