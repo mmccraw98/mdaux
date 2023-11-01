@@ -1,0 +1,17 @@
+setup.py
+mdaux/__init__.py
+mdaux.egg-info/PKG-INFO
+mdaux.egg-info/SOURCES.txt
+mdaux.egg-info/dependency_links.txt
+mdaux.egg-info/requires.txt
+mdaux.egg-info/top_level.txt
+mdaux/analysis/__init__.py
+mdaux/analysis/data_manipulation.py
+mdaux/analysis/post_processing.py
+mdaux/tests/__init__.py
+mdaux/tests/test_postprocessing.py
+mdaux/utils/__init__.py
+mdaux/utils/helpers.py
+mdaux/vizualization/__init__.py
+mdaux/vizualization/dpm_animation.py
+mdaux/vizualization/general.py

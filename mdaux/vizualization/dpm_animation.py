@@ -1,6 +1,6 @@
-from mdaux.analysis.data_manipulation import (getAtStep, getDpmData, getVertexData, getParticleDataAsVector, 
-                                              config_anim_plot, drawBoxBorders, getValToColorMap, initialize_plot)
-from mdaux.vizualization.general import drawParticle, drawVector, RoundedPolygon
+from mdaux.analysis.data_manipulation import (getAtStep, getDpmData, getVertexData, getParticleDataAsVector)
+from mdaux.vizualization.general import (drawParticle, drawVector, RoundedPolygon, config_anim_plot, drawBoxBorders, 
+                                         getValToColorMap, initialize_plot)
 from mdaux.utils.helpers import getSlopeIntercept, getIntersection
 from matplotlib import animation
 import numpy as np
