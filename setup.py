@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='mdaux',
-    version='0.1.2',
+    version='0.1.3',
     license='MIT',
     description='A package for analyzing molecular dynamics simulations.',
     author='Marshall R. McCraw',

@@ -195,8 +195,10 @@ def draw_axes_director_field(ax, dpm_df, box_lengths, draw_minor=False, draw_ima
             axis = minor_axis_vector
         else:
             axis = major_axis_vector
-        axis[:2] -= com_shift[0]
-        axis[2:] -= com_shift[1]
+        axis[0] -= com_shift[0]
+        axis[2] -= com_shift[0]
+        axis[1] -= com_shift[1]
+        axis[3] -= com_shift[1]
         ax.plot(axis[[0, 2]], axis[[1, 3]], **kwargs)
 
         if draw_images:
