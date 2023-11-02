@@ -229,7 +229,7 @@ def draw_axes_director_field(ax, dpm_df, box_lengths, draw_minor=False, draw_ima
                 ax.plot(axis[[0, 2]] - box_lengths[0], axis[[1, 3]] - box_lengths[1], **kwargs)
 
 
-def update_animation(frame, ax_anim, dpm_df, vertex_df, box_lengths, frame_to_step, draw_forces, draw_images, tracer_id=None, draw_director=False):
+def update_animation(frame, ax_anim, dpm_df, vertex_df, config_df, frame_to_step, draw_forces, draw_images, tracer_id=None, draw_director=False):
     """Update the animation.
     
     Args:
@@ -244,6 +244,8 @@ def update_animation(frame, ax_anim, dpm_df, vertex_df, box_lengths, frame_to_st
         None
     """
     ax_anim.clear()
+    step = frame_to_step[frame]
+    box_lengths = config_df[config_df['step'] == step][['Lx', 'Ly']].values[0]
     config_anim_plot(ax_anim, box_lengths, offset=1)
     drawBoxBorders(ax_anim, box_lengths, color='black', linestyle='--', alpha=0.5)
     # get a color map for the dpm ids
@@ -252,7 +254,6 @@ def update_animation(frame, ax_anim, dpm_df, vertex_df, box_lengths, frame_to_st
         dpm_id_to_color = getValToColorMap(dpm_ids)
     else:
         dpm_id_to_color = getValToColorMap([0, 1])
-    step = frame_to_step[frame]
     for dpm_id in dpm_ids:
         color = dpm_id_to_color[dpm_id]
         if tracer_id is not None and dpm_id == tracer_id:
@@ -286,14 +287,14 @@ def animate_dpm_data(dpm_df, vertex_df, config_df, num_frames, path, draw_images
     steps = dpm_df.step.unique()
     frame_to_step = steps[::len(steps) // num_frames]
 
-    box_lengths = config_df[['Lx', 'Ly']].values[0]
+    box_lengths = config_df[config_df['step'] == frame_to_step[0]][['Lx', 'Ly']].values[0]
     fig, axes = initialize_plot(1, box_lengths, offset=1)
     
     with tqdm(total=num_frames, desc='Animating') as pbar:
         anim = animation.FuncAnimation(
             fig,
             update_animation,
-            fargs=(axes[0], dpm_df, vertex_df, box_lengths, frame_to_step, draw_forces, draw_images, tracer_id, draw_director),
+            fargs=(axes[0], dpm_df, vertex_df, config_df, frame_to_step, draw_forces, draw_images, tracer_id, draw_director),
             frames=num_frames,
             interval=100,
             blit=False

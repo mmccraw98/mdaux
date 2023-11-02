@@ -11,7 +11,7 @@ def load_sim_dataframes(sim_dir):
     """
     dpm_df = pd.read_csv(f'{sim_dir}/dpm_log.csv')
     vertex_df = pd.read_csv(f'{sim_dir}/vertex_log.csv')
-    config_df = pd.read_csv(f'{sim_dir}/config.csv')
+    config_df = pd.read_csv(f'{sim_dir}/config_log.csv')
     macro_df = pd.read_csv(f'{sim_dir}/macro_log.csv')
     return dpm_df, vertex_df, config_df, macro_df
 
