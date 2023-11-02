@@ -29,6 +29,8 @@ def getSlopeIntercept(point_1, point_2):
     Returns:
         tuple: tuple of slope and intercept
     """
+    if point_2[0] == point_1[0]:
+        return None, None  # Indicating a vertical line
     m = (point_2[1] - point_1[1]) / (point_2[0] - point_1[0])
     b = point_1[1] - m * point_1[0]
     return m, b
@@ -45,6 +47,8 @@ def getIntersection(m_1, b_1, m_2, b_2):
     Returns:
         list: list of x and y coordinates of the intersection
     """
+    if m_1 == m_2:
+        return None  # Indicating parallel lines
     x = (b_2 - b_1) / (m_1 - m_2)
     y = m_1 * x + b_1
     return np.array([x, y])

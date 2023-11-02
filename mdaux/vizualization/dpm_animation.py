@@ -118,7 +118,30 @@ def drawDpmAsPolygon(ax_anim, vertex_df, dpm_df, dpm_id, step, box_lengths, draw
         # get the intersection between the lines defined by the coordinates in the segments
         m_1, b_1 = getSlopeIntercept(segment_list[i][0], segment_list[i][1])
         m_2, b_2 = getSlopeIntercept(segment_list[k][0], segment_list[k][1])
-        intersection = getIntersection(m_1, b_1, m_2, b_2)
+
+        # Check for vertical lines and parallel lines
+        if m_1 is None and m_2 is None:
+            # Both lines are vertical
+            intersection = None
+        elif m_1 is None:
+            # First line is vertical, find intersection
+            x = segment_list[i][0][0]
+            y = m_2 * x + b_2
+            intersection = np.array([x, y])
+        elif m_2 is None:
+            # Second line is vertical, find intersection
+            x = segment_list[k][0][0]
+            y = m_1 * x + b_1
+            intersection = np.array([x, y])
+        else:
+            # Neither line is vertical
+            if m_1 == m_2:
+                # Lines are parallel
+                intersection = None
+            else:
+                # Lines will intersect
+                intersection = getIntersection(m_1, b_1, m_2, b_2)
+
         intersections.append(intersection)
     intersections = np.array(intersections)
 
