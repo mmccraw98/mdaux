@@ -231,7 +231,7 @@ def draw_axes_director_field(ax, dpm_df, box_lengths, draw_minor=False, draw_ima
                 ax.plot(axis[[0, 2]] - box_lengths[0], axis[[1, 3]] - box_lengths[1], **kwargs)
 
 
-def update_animation(frame, ax_anim, dpm_df, vertex_df, config_df, frame_to_step, draw_forces, draw_images, tracer_id=None, draw_director=False):
+def update_animation(frame, ax_anim, dpm_df, vertex_df, config_df, frame_to_step, draw_forces, draw_images, tracer_id=None, draw_director=False, draw_vertices=False):
     """Update the animation.
     
     Args:
@@ -266,11 +266,13 @@ def update_animation(frame, ax_anim, dpm_df, vertex_df, config_df, frame_to_step
             drawDpmAsPolygon(ax_anim, vertex_df, dpm_df, dpm_id, step, box_lengths, draw_images, alpha=0.5, facecolor=color, edgecolor='black')
             if draw_forces:
                 drawDpmForces(ax_anim, vertex_df, dpm_df, dpm_id, step, box_lengths, alpha=0.5)
+            if draw_vertices:
+                drawDpm(ax_anim, vertex_df, dpm_df, dpm_id, step, box_lengths, alpha=0.5, color='k')
     if draw_director:
         draw_axes_director_field(ax_anim, getAtStep(dpm_df, step), box_lengths, draw_minor=False, draw_images=True, color='k', alpha=0.5)
             
 
-def animate_dpm_data(dpm_df, vertex_df, config_df, num_frames, path, draw_images, draw_forces=False, draw_director=False, tracer_id=None, **kwargs):
+def animate_dpm_data(dpm_df, vertex_df, config_df, num_frames, path, draw_images, draw_forces=False, draw_director=False, tracer_id=None, draw_vertices=False, **kwargs):
     """Animate the dpm data.
     
     Args:
@@ -296,7 +298,7 @@ def animate_dpm_data(dpm_df, vertex_df, config_df, num_frames, path, draw_images
         anim = animation.FuncAnimation(
             fig,
             update_animation,
-            fargs=(axes[0], dpm_df, vertex_df, config_df, frame_to_step, draw_forces, draw_images, tracer_id, draw_director),
+            fargs=(axes[0], dpm_df, vertex_df, config_df, frame_to_step, draw_forces, draw_images, tracer_id, draw_director, draw_vertices),
             frames=num_frames,
             interval=100,
             blit=False
